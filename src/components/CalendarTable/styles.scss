@@ -1,0 +1,22 @@
+@import '../../variables';
+
+.calendar-table__cell {
+  min-width: 120px;
+  width: calc(100% / 6);
+  padding: 8px !important;
+  text-align: center;
+}
+
+.calendar-table__header {
+  background-color: $table-header;
+}
+
+.calendar-table__cell--heading {
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.calendar-table__cell--event {
+  background-color: $event !important;
+}
