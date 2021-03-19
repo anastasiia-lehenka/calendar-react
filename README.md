@@ -6,7 +6,7 @@ This is a simple meeting planning calendar for a meeting room in your office.
 
 Run **npm install** in your terminal.
 
-Then run **npm run start** or **npm start** in your terminal and the starting page of the project will be available at: http://localhost:3000
+Then run **npm run start** or **npm start** in your terminal and the starting page of the project will be available at: http://localhost:3000/calendar-react
 
 ###### Note
 
