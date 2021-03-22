@@ -5,6 +5,7 @@
   width: calc(100% / 6);
   padding: 8px !important;
   text-align: center;
+  vertical-align: middle !important;
 }
 
 .calendar-table__header {
@@ -13,8 +14,6 @@
 
 .calendar-table__cell--heading {
   font-weight: normal;
-  text-align: center;
-  vertical-align: middle;
 }
 
 .calendar-table__cell--event {

@@ -1,23 +1,15 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import Table from 'react-bootstrap/Table';
-import { DAYS, TIMESLOTS } from '../../constants';
 import Event from '../Event/Event';
+import { DAYS, TIMESLOTS } from '../../constants';
 import './styles.scss';
 
 const CalendarTable = ({
   events,
-  filter,
   onDeleteEvent,
-  currentUser,
 }) => {
-  const hasEvent = (day, time) => {
-    if (filter) {
-      return events.find((userEvent) => (
-        userEvent.day === day && userEvent.time === time && userEvent.participants.includes(filter)
-      ));
-    }
-    return events.find((userEvent) => userEvent.day === day && userEvent.time === time);
-  };
+  const getEvent = useCallback((allEvents, day, time) => (
+    allEvents && allEvents.find((userEvent) => userEvent.day === day && userEvent.time === time)), []);
 
   return (
     <Table className="calendar-table" bordered>
@@ -35,17 +27,17 @@ const CalendarTable = ({
             <th className="calendar-table__cell calendar-table__cell--heading" key={timeslot}>{timeslot}</th>
             {DAYS.map((day) => (
               <td className={
-                  hasEvent(day, timeslot)
+                  getEvent(events, day, timeslot)
                     ? 'calendar-table__cell calendar-table__cell--event'
                     : 'calendar-table__cell'
               }
                 key={day}
               >
-                { hasEvent(day, timeslot) && (
-                <Event eventData={hasEvent(day, timeslot)}
-                  onDeleteEvent={onDeleteEvent}
-                  currentUser={currentUser}
-                />
+                { getEvent(events, day, timeslot) && (
+                  <Event
+                    eventData={getEvent(events, day, timeslot)}
+                    onDeleteEvent={onDeleteEvent}
+                  />
                 )}
               </td>
             ))}
@@ -56,4 +48,4 @@ const CalendarTable = ({
   );
 };
 
-export default CalendarTable;
+export default React.memo(CalendarTable);

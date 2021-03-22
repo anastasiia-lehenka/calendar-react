@@ -1,19 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import UsersSelect from '../../UsersSelect/UsersSelect';
 
 const AuthModal = ({ users, confirmAuth }) => {
-  const [chosenUser, setChosenUser] = useState(users[0]);
+  const [chosenUser, setChosenUser] = useState(null);
 
-  const onSelectChange = (e) => {
+  useEffect(() => {
+    if (users) {
+      setChosenUser(users[0]);
+    }
+  }, [users]);
+
+  const onSelectChange = useCallback((e) => {
     const selectedName = e.target.value;
     const selectedUser = users.find((user) => user.name === selectedName);
 
     setChosenUser(selectedUser);
-  };
+  }, [users]);
 
   return (
-    <Modal className="auth-modal fade"
+    <Modal className="auth-modal"
       show
       backdrop="static"
       keyboard={false}
@@ -35,4 +41,4 @@ const AuthModal = ({ users, confirmAuth }) => {
   );
 };
 
-export default AuthModal;
+export default React.memo(AuthModal);

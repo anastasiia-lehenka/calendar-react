@@ -3,10 +3,7 @@ import { Modal, Button } from 'react-bootstrap';
 
 const DeleteModal = ({ event, deleteEvent, cancelDelete }) => (
   <Modal
-    className="delete-modal fade"
     show
-    backdrop="static"
-    keyboard={false}
     centered
     onHide={cancelDelete}
   >
