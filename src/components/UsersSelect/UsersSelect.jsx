@@ -4,15 +4,32 @@ import { Form } from 'react-bootstrap';
 const UsersSelect = ({
   users,
   hasDefaultOption,
-  // eslint-disable-next-line no-unused-vars
-  isMultiple,
+  multiple,
   onChange,
   className,
+  required,
+  value,
 }) => (
-  <Form.Control as="select" className={className} custom onChange={onChange}>
-    { hasDefaultOption && <option value="All members">All members</option> }
-    { users.map((user) => <option key={user.name} value={user.name}>{user.name}</option>) }
-  </Form.Control>
+  <>
+    <Form.Control
+      as="select"
+      custom
+      aria-describedby="selectHelpBlock"
+      className={className}
+      onChange={onChange}
+      multiple={multiple}
+      required={required}
+      value={value}
+    >
+      { hasDefaultOption && <option value="All members">All members</option>}
+      { users && users.map((user) => <option key={user.name} value={user.name}>{user.name}</option>)}
+    </Form.Control>
+    { multiple && (
+      <Form.Text id="selectHelpBlock" muted>
+        Press Ctrl to choose multiple participants.
+      </Form.Text>
+    )}
+  </>
 );
 
-export default UsersSelect;
+export default React.memo(UsersSelect);

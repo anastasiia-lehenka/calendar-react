@@ -1,14 +1,22 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Button from 'react-bootstrap/Button';
+import { X } from 'react-bootstrap-icons';
+import UserContext from '../../UserContext';
 import './styles.scss';
 
-const Event = ({ onDeleteEvent, eventData, currentUser }) => (
-  <div className="event">
-    <span className="event__name d-inline-block">{eventData.name}</span>
-    {/* eslint-disable-next-line operator-linebreak */}
-    {currentUser.isAdmin &&
-      <Button className="event__delete-button" variant="transparent" onClick={() => onDeleteEvent(eventData)} />}
-  </div>
-);
+const Event = ({ onDeleteEvent, eventData }) => {
+  const [currentUser] = useContext(UserContext);
 
-export default Event;
+  return (
+    <div className="event">
+      <span className="event__name">{eventData.name}</span>
+      { currentUser.admin && (
+        <Button className="event__delete-button" variant="transparent" onClick={() => onDeleteEvent(eventData)}>
+          <X className="icon" />
+        </Button>
+      )}
+    </div>
+  );
+};
+
+export default React.memo(Event);

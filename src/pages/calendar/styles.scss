@@ -1,9 +1,5 @@
 @import '../../variables';
 
-a {
-  text-decoration: none;
-}
-
 .wrapper {
   max-width: 1200px;
   min-width: 360px;
@@ -26,4 +22,11 @@ a {
     box-shadow: none;
     outline: none;
   }
+}
+
+.toast-container {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  padding: 20px;
 }

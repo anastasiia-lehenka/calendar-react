@@ -1,4 +1,4 @@
-import { USER_STORAGE_KEY } from './constants';
+import { USER_STORAGE_KEY } from '../constants';
 
 export const getUserData = () => JSON.parse(sessionStorage.getItem(USER_STORAGE_KEY));
 export const setUserData = (user) => sessionStorage.setItem(USER_STORAGE_KEY, JSON.stringify(user));
