@@ -4,7 +4,12 @@ import React, {
   useCallback,
   useMemo,
 } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 import Calendar from './pages/calendar';
 import CreateEvent from './pages/createEvent';
@@ -13,21 +18,18 @@ import AuthModal from './components/modals/AuthModal';
 import service from './services/NotificationsDecorator';
 import UserContext from './UserContext';
 import { deleteUserData, getUserData, setUserData } from './services/sessionStorageApi';
-import { HOMEPAGE } from './constants';
 
 const App = () => {
   const [events, setEvents] = useState([]);
   const [users, setUsers] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [eventToDelete, setEventToDelete] = useState(null);
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(true);
   const [filter, setFilter] = useState('All members');
 
   useEffect(() => {
     const authorizedUser = getUserData();
-    if (authorizedUser) {
-      setCurrentUser(authorizedUser);
-    }
+    setCurrentUser(authorizedUser);
   }, []);
 
   useEffect(() => {
@@ -48,6 +50,8 @@ const App = () => {
   }, []);
 
   const createEvent = async (eventData) => {
+    // eslint-disable-next-line no-debugger
+    debugger;
     const response = await service.createEvent(eventData);
     if (response.data) {
       setEvents((prevValue) => {
@@ -110,14 +114,14 @@ const App = () => {
   ), [events, filter]);
 
   return (
-    <Router>
+    <Router basename={process.env.PUBLIC_URL}>
       <div className="App">
-        { !currentUser
-          ? <AuthModal confirmAuth={confirmAuth} users={users} />
-          : (
-            <Switch>
-              <Route path={`/${HOMEPAGE}/calendar`}>
-                <UserContext.Provider value={currentUserValue}>
+        <UserContext.Provider value={currentUserValue}>
+          <Switch>
+            <Route exact path="/calendar">
+              { !currentUser
+                ? <AuthModal confirmAuth={confirmAuth} users={users} />
+                : (
                   <Calendar
                     users={users}
                     events={filteredEvents}
@@ -130,13 +134,16 @@ const App = () => {
                     filterUsers={filterUsers}
                     filter={filter}
                   />
-                </UserContext.Provider>
-              </Route>
-              <Route path={`/${HOMEPAGE}/create-event`}>
-                <CreateEvent users={users} isExistingEvent={isExistingEvent} createEvent={createEvent} />
-              </Route>
-            </Switch>
-          )}
+                )}
+            </Route>
+            <Route exact path="/create-event">
+              <CreateEvent users={users} isExistingEvent={isExistingEvent} createEvent={createEvent} />
+            </Route>
+            <Route path="/">
+              <Redirect to="/calendar" />
+            </Route>
+          </Switch>
+        </UserContext.Provider>
         { notifications && (
           <Container className="toast-container">
             { notifications.map((notification) => <Notification key={notification.id} data={notification} />)}

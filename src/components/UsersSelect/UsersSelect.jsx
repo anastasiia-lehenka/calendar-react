@@ -2,6 +2,7 @@ import React from 'react';
 import { Form } from 'react-bootstrap';
 
 const UsersSelect = ({
+  name,
   users,
   hasDefaultOption,
   multiple,
@@ -20,6 +21,7 @@ const UsersSelect = ({
       multiple={multiple}
       required={required}
       value={value}
+      name={name}
     >
       { hasDefaultOption && <option value="All members">All members</option>}
       { users && users.map((user) => <option key={user.name} value={user.name}>{user.name}</option>)}
