@@ -10,7 +10,6 @@ import UsersSelect from '../../components/UsersSelect/UsersSelect';
 import CalendarTable from '../../components/CalendarTable/CalendarTable';
 import DeleteModal from '../../components/modals/DeleteModal/DeleteModal';
 import UserContext from '../../UserContext';
-import { HOMEPAGE } from '../../constants';
 import './styles.scss';
 
 const Calendar = ({
@@ -50,7 +49,7 @@ const Calendar = ({
                 hasDefaultOption
               />
               {currentUser.admin && (
-              <Link to={`/${HOMEPAGE}/create-event`}>
+              <Link to="/create-event">
                 <Button className="new-event-button btn-light"
                   variant="outline-secondary"
                   role="button"
