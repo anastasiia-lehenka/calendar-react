@@ -50,8 +50,6 @@ const App = () => {
   }, []);
 
   const createEvent = async (eventData) => {
-    // eslint-disable-next-line no-debugger
-    debugger;
     const response = await service.createEvent(eventData);
     if (response.data) {
       setEvents((prevValue) => {
