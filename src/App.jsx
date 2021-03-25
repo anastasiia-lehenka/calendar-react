@@ -7,8 +7,8 @@ import {
   Redirect,
 } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
-import Calendar from './pages/calendar';
-import CreateEvent from './pages/createEvent';
+import Calendar from './containers/calendar';
+import CreateEvent from './containers/createEvent';
 import { getEvents } from './store/events/actions';
 import { changeCurrentUser, getUsers } from './store/users/actions';
 import { getUserData } from './services/sessionStorageApi';
@@ -22,6 +22,8 @@ const App = () => {
     const authorizedUser = getUserData();
     if (authorizedUser) {
       dispatch(changeCurrentUser(authorizedUser));
+    } else {
+      dispatch(changeCurrentUser(null));
     }
   }, [dispatch]);
 

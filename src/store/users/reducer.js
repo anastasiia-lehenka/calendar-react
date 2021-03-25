@@ -8,7 +8,7 @@ import {
 const initialState = {
   users: [],
   loading: false,
-  currentUser: null,
+  currentUser: {},
 };
 
 const reducer = (state = initialState, action) => {

@@ -35,7 +35,6 @@ const CreateEvent = () => {
 
   const submitForm = (e) => {
     e.preventDefault();
-    setIsAlertShown(false);
 
     if (!isExistingEvent(events, eventData.day, eventData.time)) {
       dispatch(addEvent(eventData));
@@ -45,13 +44,13 @@ const CreateEvent = () => {
     }
   };
 
-  const onFieldChange = (e) => {
+  const onFieldChange = useCallback((e) => {
     setIsAlertShown(false);
     setEventData((prevValue) => ({
       ...prevValue,
       [e.target.name]: e.target.value,
     }));
-  };
+  }, []);
 
   const onAlertDismiss = useCallback(() => {
     setIsAlertShown(false);

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Container,
@@ -52,6 +52,10 @@ const Calendar = () => {
       : events
   ), [events, eventsFilter]);
 
+  const changeFilter = useCallback((e) => dispatch(changeEventsFilter(e.target.value)), [dispatch]);
+
+  const setEventToDelete = useCallback((eventId) => dispatch(changeEventToDelete(eventId)), [dispatch]);
+
   return (
     !currentUser
       ? <AuthModal confirmAuth={confirmAuth} users={users} />
@@ -75,7 +79,7 @@ const Calendar = () => {
                   <UsersSelect
                     className="users-select"
                     users={users}
-                    onChange={(e) => dispatch(changeEventsFilter(e.target.value))}
+                    onChange={changeFilter}
                     value={eventsFilter}
                     hasDefaultOption
                   />
@@ -94,7 +98,7 @@ const Calendar = () => {
             <CalendarTable
               currentUser={currentUser}
               events={filteredEvents}
-              showDeleteModal={(eventId) => dispatch(changeEventToDelete(eventId))}
+              showDeleteModal={setEventToDelete}
             />
           </Container>
           { eventToDelete && (
