@@ -11,8 +11,11 @@
     "react-bootstrap": "^1.5.2",
     "react-bootstrap-icons": "^1.4.0",
     "react-dom": "^17.0.1",
+    "react-redux": "^7.2.3",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0",
     "uuid": "^8.3.2",
     "web-vitals": "^1.0.1"
   },
@@ -21,8 +24,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint src/**/*.js",
-    "lint:fix": "eslint src/**/*.js --fix",
+    "lint": "eslint src/**/*.js src/**/*.jsx",
+    "lint:fix": "eslint src/**/*.js src/**/*.jsx --fix",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },

@@ -1,4 +1,5 @@
-import React, { useState, useCallback, useContext } from 'react';
+import React, { useState, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Container,
   Form,
@@ -7,14 +8,18 @@ import {
   Button,
 } from 'react-bootstrap';
 import { Link, Redirect, useHistory } from 'react-router-dom';
+import { addEvent } from '../../store/events/actions';
 import UsersSelect from '../../components/UsersSelect';
 import ValidationAlert from '../../components/ValidationAlert';
-import UserContext from '../../UserContext';
 import { DAYS, TIMESLOTS } from '../../constants';
 import './styles.scss';
 
-const CreateEvent = ({ users, createEvent, isExistingEvent }) => {
-  const [currentUser] = useContext(UserContext);
+const CreateEvent = () => {
+  const dispatch = useDispatch();
+  const users = useSelector((state) => state.users.users);
+  const currentUser = useSelector((state) => state.users.currentUser);
+  const events = useSelector((state) => state.events.events);
+  const loading = useSelector((state) => state.events.loading);
   const [eventData, setEventData] = useState({
     name: '',
     participants: [],
@@ -22,33 +27,30 @@ const CreateEvent = ({ users, createEvent, isExistingEvent }) => {
     time: TIMESLOTS[0],
   });
   const [isAlertShown, setIsAlertShown] = useState(false);
-  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const history = useHistory();
 
-  const submitForm = async (e) => {
+  const isExistingEvent = (allEvents, day, time) => (
+    allEvents && allEvents.find((event) => event.day === day && event.time === time)
+  );
+
+  const submitForm = (e) => {
     e.preventDefault();
-    setIsAlertShown(false);
 
-    if (!isExistingEvent(eventData.day, eventData.time)) {
-      setIsButtonDisabled(true);
-      const event = await createEvent(eventData);
-      setIsButtonDisabled(false);
-
-      if (event) {
-        history.push('/calendar');
-      }
+    if (!isExistingEvent(events, eventData.day, eventData.time)) {
+      dispatch(addEvent(eventData));
+      history.push('/calendar');
     } else {
       setIsAlertShown(true);
     }
   };
 
-  const onFieldChange = (e) => {
+  const onFieldChange = useCallback((e) => {
     setIsAlertShown(false);
     setEventData((prevValue) => ({
       ...prevValue,
       [e.target.name]: e.target.value,
     }));
-  };
+  }, []);
 
   const onAlertDismiss = useCallback(() => {
     setIsAlertShown(false);
@@ -97,16 +99,7 @@ const CreateEvent = ({ users, createEvent, isExistingEvent }) => {
                 </Col>
               </Form.Group>
               <Form.Group as={Row}>
-                <Col xs="6"
-                  sm={{
-                    span: 4,
-                    offset: 4,
-                  }}
-                  md={{
-                    span: 2,
-                    offset: 8,
-                  }}
-                >
+                <Col xs="6" sm={{ span: 4, offset: 4 }} md={{ span: 2, offset: 8 }}>
                   <Link to="/calendar">
                     <Button type="button" className="button btn-outline-secondary me-2" variant="light">
                       Cancel
@@ -118,7 +111,7 @@ const CreateEvent = ({ users, createEvent, isExistingEvent }) => {
                     type="submit"
                     className="button btn-outline-secondary"
                     variant="light"
-                    disabled={isButtonDisabled}
+                    disabled={loading}
                   >
                     Create
                   </Button>
