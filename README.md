@@ -11,3 +11,6 @@ Then run **npm run start** or **npm start** in your terminal and the starting pa
 ###### Note
 
 Authorization is implemented using Session Storage. So to logout you need to close the tab with application in your browser or press _Logout_ button in the top right corner of the page.
+ 
+ 
+To view application on GitHub Pages you need to allow Insecure content in the settings of your browser. This issue is caused by making requests to http.

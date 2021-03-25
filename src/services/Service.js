@@ -30,7 +30,7 @@ class Service {
   async getEvents() {
     const response = await this.sendHttpRequest('GET', this.eventsEntity);
     const events = await response.json();
-    return events && events.map((event) => Object.assign(JSON.parse(event.data), { id: event.id }));
+    return events && events.map((event) => ({ id: event.id, ...JSON.parse(event.data) }));
   }
 
   async createEvent(eventData) {
@@ -38,7 +38,7 @@ class Service {
       data: JSON.stringify(eventData),
     });
     const event = await response.json();
-    return Object.assign(JSON.parse(event.data), { id: event.id });
+    return { id: event.id, ...JSON.parse(event.data) };
   }
 
   async deleteEvent(id) {
@@ -48,7 +48,7 @@ class Service {
   async getUsers() {
     const response = await this.sendHttpRequest('GET', this.usersEntity);
     const users = await response.json();
-    return users && users.map((user) => Object.assign(JSON.parse(user.data), { id: user.id }));
+    return users && users.map((user) => ({ id: user.id, ...JSON.parse(user.data) }));
   }
 
   async createUser(userData) {
@@ -56,7 +56,7 @@ class Service {
       data: JSON.stringify(userData),
     });
     const user = await response.json();
-    return Object.assign(JSON.parse(user.data), { id: user.id });
+    return { id: user.id, ...JSON.parse(user.data) };
   }
 }
 
